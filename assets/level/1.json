@@ -1,0 +1,6 @@
+{
+	"handles" : [
+		{ "action": "attack", "time": 7 },
+		{ "action": "move", "time": 10 }
+	]
+}
