@@ -1,5 +1,4 @@
 require 'lib/class'
-require 'lib/json'
 
 local Level = class()
 

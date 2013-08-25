@@ -34,16 +34,16 @@ end
 
 function Meter:update()
 	self._base.update(self)
-	for i, handle in ipairs(self.children) do
-		handle:unactivate()
-	end
 
 	local timer = HighwayHero.timer
-	if timer.status == 'started' then
-		for i, handle in ipairs(self.children) do
-			if handle:getTime() > timer.time then
+	local found = false
+	for i, handle in ipairs(self.children) do
+		if timer.status == 'started' then
+			if found or handle:getTime() <= timer.time then
+				handle:unactivate()
+			else
 				handle:activate()
-				break
+				found = true
 			end
 		end
 	end

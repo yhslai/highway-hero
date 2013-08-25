@@ -15,7 +15,7 @@ end
 
 function Timer:update(dt)
 	if self.status == 'started' then
-		self.time = self.time + dt * 3 -- for debugging
+		self.time = self.time + dt
 		if self:remainingTime() < 0 then
 			self.time = 10
 			beholder.trigger('timeout')

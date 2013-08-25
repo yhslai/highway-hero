@@ -20,24 +20,27 @@ local function load_level(n)
 	HighwayHero.meter = meter
 	screen:addEntity(meter)
 
-	local go_button = Button({
+	local goButton = Button({
 		onPressed = function() beholder.trigger('hero_go') end,
 		onImage = R.images.goButtonOn,
 		offImage = R.images.goButtonOff,
 		checkOn = function() return meter:isFilled() end,
-	}, 38, 395)
-	screen:addEntity(go_button)
+		once = true,
+	}, 38, 392)
+	screen:addEntity(goButton)
 
 	local timer = Timer()
 	HighwayHero.timer = timer
 	screen:addEntity(timer)
 
+	local monsters = _.map(level.data.monsters, function(x) return Monster(x.data, x.position) end)
+	screen:addEntities(monsters)
+
 	local hero = Hero()
 	HighwayHero.hero = hero
 	screen:addEntity(hero)
 
-	local monsters = _.map(level.data.monsters, function(x) return Monster(x.data, x.position) end)
-	screen:addEntities(monsters)
+	screen:addEntity(ControlMenu())
 
 	HighwayHero.currentScreen = screen
 end

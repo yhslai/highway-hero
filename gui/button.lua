@@ -10,11 +10,13 @@ function Button:__init(data, x, y)
 	self.onImage = data.onImage
 	self.pressingImage = data.pressingImage
 	self.offImage = data.offImage
-	self.checkOn = data.checkOn
+	self.checkOn = data.checkOn or function() return true end
+	self.once = data.once
 
 	self.x = x
 	self.y = y
 	self.status = 'off'
+	self.visible = true
 end
 
 function Button:getImage()
@@ -37,9 +39,17 @@ function Button:getRect()
 	end
 end
 
+function Button:show()
+	self.visible = true
+end
+
+function Button:hide()
+	self.visible = false
+end
+
 function Button:draw()
 	local image = self:getImage()
-	if image then love.graphics.draw(image, self.x, self.y) end
+	if self.visible and image then love.graphics.draw(image, self.x, self.y) end
 end
 
 function Button:update()
@@ -52,10 +62,10 @@ end
 
 function Button:onMousePressed(x, y, button)
 	if button == 'l' then
-		if self.status == 'on' and self:getRect():contains(x, y) then
+		if self.visible and self.status == 'on' and self:getRect():contains(x, y) then
 			if type(self.onPressed) == 'function' then
 				self:onPressed()
-				self.status = 'pressed'
+				if self.once then self:removeSelf() end
 				return true
 			end
 		end

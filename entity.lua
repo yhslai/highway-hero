@@ -2,7 +2,8 @@ require 'lib/class'
 
 local Entity = class()
 
-function Entity:__init()
+function Entity:__init(name)
+	self._name = name
 	self.children = {}
 	self._observerId = {}
 	beholder.group(self._observerId, function() self:registerObservers() end)
