@@ -41,9 +41,13 @@ function Entity:onAdded(parent)
 	self.parent = parent
 end
 
-function Entity:onRemoved( ... )
+function Entity:onRemoved()
 	self.parent = nil
 	beholder.stopObserving(self._observerId)
+
+	for i, e in ipairs(self.children) do
+		e:onRemoved()
+	end
 end
 
 function Entity:addEntity(entity)

@@ -5,18 +5,26 @@ beholder = require 'lib/beholder'
 require 'classes'
 
 HighwayHero = {
+	level = 0,
+	maxLevel = 10,
 	currentScreen = nil,
 	meter = nil,
 	timer = nil,
 	hero = nil,
 }
 
-local function load_level(n)
+local function init_level()
+	beholder.trigger('new_action', Action.talk)
+end
+
+local function load_level(n, oldMeter)
+	HighwayHero.level = n
+
 	local screen = Screen()
 
 	local level = Level(tostring(n))
 	local handles = _.map(level.data.handles, function(x) return Handle(x.action, x.time) end)
-	local meter = Meter(handles)
+	local meter = oldMeter or Meter(handles)
 	HighwayHero.meter = meter
 	screen:addEntity(meter)
 
@@ -33,6 +41,9 @@ local function load_level(n)
 	HighwayHero.timer = timer
 	screen:addEntity(timer)
 
+	local finishLine = FinishLine(level.data.length)
+	screen:addEntity(finishLine)
+
 	local monsters = _.map(level.data.monsters, function(x) return Monster(x.data, x.position) end)
 	screen:addEntities(monsters)
 
@@ -43,16 +54,24 @@ local function load_level(n)
 	screen:addEntity(ControlMenu())
 
 	HighwayHero.currentScreen = screen
-end
 
-local function init_level()
-	beholder.trigger('new_action', Action.talk)
+	init_level()
 end
 
 function love.load()
 	require 'R'
 	load_level(1)
-	init_level()
+
+	beholder.observe('retry_level', function()
+		--print(HighwayHero.level)
+		HighwayHero.currentScreen:onRemoved()
+		load_level(HighwayHero.level, HighwayHero.meter)
+	end)
+	beholder.observe('next_level', function()
+		print(HighwayHero.level % HighwayHero.maxLevel + 1)
+		HighwayHero.currentScreen:onRemoved()
+		load_level(HighwayHero.level % HighwayHero.maxLevel + 1)
+	end)
 end
 
 function love.update(dt)
@@ -64,6 +83,14 @@ function love.draw()
     love.graphics.draw(R.images.background, 0, 0)
     love.graphics.draw(R.images.meter, 18, 20)
 	HighwayHero.currentScreen:draw()
+	love.graphics.setColor(0, 0, 0, 255)
+	local font = love.graphics.newFont('assets/font/Krungthep.ttf', 32)
+	love.graphics.setFont(font)
+	love.graphics.print('Level ' .. HighwayHero.level, 495, 15)
+	font = love.graphics.newFont('assets/font/Krungthep.ttf', 24)
+	love.graphics.setFont(font)
+	love.graphics.printf('' .. string.format('%2.1f', HighwayHero.timer:remainingTime()) .. 's', 515, 430, 100, 'right')
+	love.graphics.setColor(255, 255, 255, 255)
 end
 
 function love.mousepressed(x, y, button)

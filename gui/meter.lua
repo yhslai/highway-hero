@@ -18,6 +18,12 @@ end
 
 function Meter:registerObservers()
 	beholder.observe('hero_go', function() self.controllable = false end)
+	beholder.observe('retry_level', function()
+		self.controllable = true
+		for i, handle in ipairs(self.children) do
+			handle:unactivate()
+		end
+	end)
 end
 
 -- Override Entity:draw to draw in reverse order

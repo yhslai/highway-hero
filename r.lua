@@ -27,6 +27,8 @@ R = {
 		diedLabel = newImage('assets/gui/died_label.png'),
 		timeoutLabel = newImage('assets/gui/timeout_label.png'),
 		passLabel = newImage('assets/gui/pass_label.png'),
+		completeLabel = newImage('assets/gui/complete_label.png'),
+		finishLine = newImage('assets/finish_line.png'),
 	},
 	anims = {
 		hero = {

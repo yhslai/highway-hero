@@ -9,7 +9,8 @@ function Timer:__init()
 end
 
 function Timer:registerObservers()
-	beholder.observe('timeout', function() self.status = 'stopped' end)
+	beholder.observe('gameover', function() self.status = 'stopped' end)
+	beholder.observe('passed_level', function() self.status = 'stopped' end)
 	beholder.observe('hero_go', function() self.status = 'started' end)
 end
 
@@ -18,7 +19,7 @@ function Timer:update(dt)
 		self.time = self.time + dt
 		if self:remainingTime() < 0 then
 			self.time = 10
-			beholder.trigger('timeout')
+			beholder.trigger('gameover', 'timeout')
 		end
 	end
 end

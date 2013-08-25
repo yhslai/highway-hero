@@ -52,7 +52,6 @@ function Handle:onMousePressed(x, y, button)
 			self.dragging.active = true
 			self.dragging.offsetX = x - self.x
 			self.dragging.offsetY = y - self.y
-			print("Dragging!")
 			return true
 		end
 	end

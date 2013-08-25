@@ -49,7 +49,7 @@ end
 function Action.toStats(action)
 	local statsLookup = {
 		[Action.attack] = { attack = 1, defence = 1, speed = 1.5 },
-		[Action.move] = { attack = 0.75, defence = 0.75, speed = 2.5 },
+		[Action.move] = { attack = 0.75, defence = 0.75, speed = 2 },
 		[Action.defend] = { attack = 0.75, defence = 2, speed = 1 },
 		[Action.heal] = { attack = 0.5, defence = 0.5, speed = 1 },
 		[Action.talk] = { attack = 0.5, defence = 0.5, speed = 1.5 },
