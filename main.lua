@@ -1,36 +1,55 @@
-require 'classes'
+require 'lib/AnAL'
 _ = require 'lib/underscore'
 inspect = require 'lib/inspect'
 beholder = require 'lib/beholder'
+require 'classes'
 
 HighwayHero = {
-	currentScreen = Screen(),
+	currentScreen = nil,
 	meter = nil,
+	timer = nil,
+	hero = nil,
 }
 
-local function hero_go()
-	print("go")
-end
-
 local function load_level(n)
+	local screen = Screen()
+
 	local level = Level(tostring(n))
 	local handles = _.map(level.data.handles, function(x) return Handle(x.action, x.time) end)
 	local meter = Meter(handles)
 	HighwayHero.meter = meter
-	HighwayHero.currentScreen:addEntity(meter)
+	screen:addEntity(meter)
 
 	local go_button = Button({
-		onPressed = hero_go,
-		onImage = R.images.go_button_on,
-		offImage = R.images.go_button_off,
-		checkOn = function() return meter:isFilled() end
+		onPressed = function() beholder.trigger('hero_go') end,
+		onImage = R.images.goButtonOn,
+		offImage = R.images.goButtonOff,
+		checkOn = function() return meter:isFilled() end,
 	}, 38, 395)
-	HighwayHero.currentScreen:addEntity(go_button)
+	screen:addEntity(go_button)
+
+	local timer = Timer()
+	HighwayHero.timer = timer
+	screen:addEntity(timer)
+
+	local hero = Hero()
+	HighwayHero.hero = hero
+	screen:addEntity(hero)
+
+	local monsters = _.map(level.data.monsters, function(x) return Monster(x.data, x.position) end)
+	screen:addEntities(monsters)
+
+	HighwayHero.currentScreen = screen
+end
+
+local function init_level()
+	beholder.trigger('new_action', Action.talk)
 end
 
 function love.load()
 	require 'R'
 	load_level(1)
+	init_level()
 end
 
 function love.update(dt)

@@ -21,7 +21,8 @@ function Button:getImage()
 	local image
 	if self.status == 'on' then image = self.onImage
 	elseif self.status == 'pressing' then image = self.pressingImage
-	else image = self.offImage
+	elseif self.status == 'off' then image = self.offImage
+	else image = nil
 	end
 
 	return image
@@ -54,6 +55,7 @@ function Button:onMousePressed(x, y, button)
 		if self.status == 'on' and self:getRect():contains(x, y) then
 			if type(self.onPressed) == 'function' then
 				self:onPressed()
+				self.status = 'pressed'
 				return true
 			end
 		end

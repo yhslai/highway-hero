@@ -2,9 +2,22 @@ require 'lib/class'
 
 local Meter = class(Entity)
 
+function Meter.timeToY(time)
+	return 20 + (10 - time) * 360 / 10
+end
+
+function Meter.yToTime(y)
+	return (10 - (y - 20) * 10 / 360)
+end
+
 function Meter:__init(handles)
 	Entity.__init(self)
 	self.children = handles
+	self.controllable = true
+end
+
+function Meter:registerObservers()
+	beholder.observe('hero_go', function() self.controllable = false end)
 end
 
 -- Override Entity:draw to draw in reverse order
@@ -16,6 +29,24 @@ function Meter:draw()
 		love.graphics.setColor(255, 255, 255, 255)
 		handle:draw()
 	end
+	self:_drawTimeBar()
+end
+
+function Meter:update()
+	self._base.update(self)
+	for i, handle in ipairs(self.children) do
+		handle:unactivate()
+	end
+
+	local timer = HighwayHero.timer
+	if timer.status == 'started' then
+		for i, handle in ipairs(self.children) do
+			if handle:getTime() > timer.time then
+				handle:activate()
+				break
+			end
+		end
+	end
 end
 
 function Meter:_sortHandles()
@@ -26,10 +57,24 @@ function Meter:_sortHandles()
 	end)
 end
 
+function Meter:_drawTimeBar()
+	local timer = HighwayHero.timer
+	if timer.status == 'started' then
+		local y = Meter.timeToY(timer.time)
+		love.graphics.draw(R.images.timeBar, 35.5, y / 360 * 355 - 5)
+	end
+end
+
 function Meter:isFilled()
 	local times = _.map(self.children, function(h) return h:getTime() end)
 	local maxTime = _.max(times)
 	return maxTime == 10
+end
+
+function Meter:onMousePressed(x, y, button)
+	if self.controllable then
+		self._base.onMousePressed(self, x, y, button)
+	end
 end
 
 return Meter

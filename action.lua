@@ -34,4 +34,16 @@ function Action.toColor(action)
 	return colorLookup[action]
 end
 
+function Action.toAnim(action)
+	local animLookup = {
+		[Action.attack] = R.anims.hero.attack,
+		[Action.move] = R.anims.hero.move,
+		[Action.defend] = R.anims.hero.defend,
+		[Action.heal] = R.anims.hero.heal,
+		[Action.talk] = R.anims.hero.talk
+	}
+
+	return animLookup[action]
+end
+
 return Action
