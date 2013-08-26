@@ -43,12 +43,18 @@ end
 
 
 function ControlMenu:registerObservers()
+	--[[
+	beholder.observe('hero_go', function()
+		self.retryButton:show()
+	end)
+	]]--
 	beholder.observe('gameover', function(reason)
 		self.retryButton:show()
 		if reason == 'die' then self.diedLabel:show() end
 		if reason == 'timeout' then self.timeoutLabel:show() end
 	end)
 	beholder.observe('passed_level', function()
+		self.retryButton:hide()
 		if HighwayHero.level == HighwayHero.maxLevel then
 			self.completeLabel:show()
 		else

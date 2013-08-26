@@ -20,13 +20,17 @@ local monster_data = {
 }
 
 return {
-	length = 14,
+	length = 6.5,
 	handles = {
-		{ action = "attack", time = 5 },
-		{ action = "move", time = 10 }
+		{ action = "attack", time = 0 },
+		{ action = "move", time = 2 },
+		{ action = "heal", time = 5 },
+		{ action = "defend", time = 8 },
+		{ action = "attack", time = 10 },
 	},
 	monsters = {
-		{ data = monster_data.slime, position = 7 },
-		--{ data = monster_data.snake, position = 3 },
+		{ data = monster_data.snake, position = 6 },
+		{ data = monster_data.slime, position = 3 },
+		{ data = monster_data.octopus, position = 1 },
 	}
 }

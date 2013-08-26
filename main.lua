@@ -6,7 +6,7 @@ require 'classes'
 
 HighwayHero = {
 	level = 0,
-	maxLevel = 10,
+	maxLevel = 9,
 	currentScreen = nil,
 	meter = nil,
 	timer = nil,
@@ -60,7 +60,7 @@ end
 
 function love.load()
 	require 'R'
-	load_level(1)
+	load_level(9)
 
 	beholder.observe('retry_level', function()
 		--print(HighwayHero.level)

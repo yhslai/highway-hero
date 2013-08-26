@@ -59,6 +59,7 @@ function Meter:_sortHandles()
 	self.children = _.sort(self.children, function(a, b)
 		if a.dragging.active then return true end
 		if b.dragging.active then return false end
+		if a:getTime() == b:getTime() then return a.action < b.action end
 		return a:getTime() < b:getTime()
 	end)
 end

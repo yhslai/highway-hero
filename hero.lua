@@ -24,7 +24,7 @@ function Hero:registerObservers()
 	end)
 	beholder.observe('collide', function(hero, monster)
 		self.hp = self.hp - monster.attack / self.stats.defence
-		self.bounceSpeed = 2.5 + self.stats.speed
+		self.bounceSpeed = 1.5 + self.stats.speed * 1.5
 		self.tint = 1
 	end)
 
@@ -54,6 +54,9 @@ function Hero:update(dt)
 			self.bounceSpeed = math.max(0, self.bounceSpeed)
 			self.tint = self.tint - dt
 			self.tint = math.max(0, self.tint)
+			if self.action == Action.heal then
+				self.hp = math.min(self.maxHp, self.hp + dt * 0.75)
+			end
 		else
 			self.alpha = math.max(0, self.alpha - dt * 2)
 			if self.alpha == 0 then

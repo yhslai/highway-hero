@@ -19,7 +19,7 @@ end
 
 function Monster:registerObservers()
 	beholder.observe('collide', function(hero, monster)
-		if monster == self then
+		if monster == self and hero.hp > 0 then
 			self.hp = self.hp - hero.stats.attack / self.defence
 			self.tint = 1
 		end

@@ -6,7 +6,6 @@ function Entity:__init(name)
 	self._name = name
 	self.children = {}
 	self._observerId = {}
-	beholder.group(self._observerId, function() self:registerObservers() end)
 	self.toRemove = false
 end
 
@@ -38,6 +37,7 @@ function Entity:afterUpdate()
 end
 
 function Entity:onAdded(parent)
+	beholder.group(self._observerId, function() self:registerObservers() end)
 	self.parent = parent
 end
 
