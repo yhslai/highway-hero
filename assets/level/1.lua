@@ -23,7 +23,7 @@ return {
 	length = 16,
 	handles = {
 		{ action = "attack", time = 10 },
-		{ action = "move", time = 5 }
+		{ action = "move", time = 3 }
 	},
 	monsters = {
 		{ data = monster_data.slime, position = 12 },

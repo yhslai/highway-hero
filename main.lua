@@ -60,7 +60,7 @@ end
 
 function love.load()
 	require 'R'
-	load_level(9)
+	load_level(1)
 
 	beholder.observe('retry_level', function()
 		--print(HighwayHero.level)
