@@ -59,7 +59,7 @@ local function load_level(n, oldMeter)
 end
 
 function love.load()
-	require 'R'
+	require 'r'
 	load_level(1)
 
 	beholder.observe('retry_level', function()
