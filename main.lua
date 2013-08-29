@@ -53,6 +53,8 @@ local function load_level(n, oldMeter)
 
 	screen:addEntity(ControlMenu())
 
+	screen:addEntity(Minimap(level.data.length, monsters))
+
 	HighwayHero.currentScreen = screen
 
 	init_level()
