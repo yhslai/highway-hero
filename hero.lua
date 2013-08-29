@@ -23,9 +23,18 @@ function Hero:registerObservers()
 		self.stats = Action.toStats(action)
 	end)
 	beholder.observe('collide', function(hero, monster)
-		self.hp = self.hp - monster.attack / self.stats.defence
-		self.bounceSpeed = 1.5 + self.stats.speed * 1.5
-		self.tint = 1
+		if self.hp > 0 then
+			self.hp = self.hp - monster.attack / self.stats.defence
+			self.bounceSpeed = 1.5 + self.stats.speed * 1.5
+			self.tint = 1
+			if self.hp <= 0 then
+				love.audio.play(R.sounds.die)
+			elseif self.action == 'attack' then
+				love.audio.play(R.sounds.sword)
+			else
+				love.audio.play(R.sounds.hit)
+			end
+		end
 	end)
 
 end

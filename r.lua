@@ -1,4 +1,5 @@
 local newImage = love.graphics.newImage
+local newSound = function (filename) return love.audio.newSource(filename, "static") end
 local heroSheet = newImage('assets/sprite/character.png')
 
 R = {
@@ -38,5 +39,10 @@ R = {
 			heal = newAnimation(heroSheet, 48, 48, 0.2, {10, 11, 12}),
 			defend = newAnimation(heroSheet, 48, 48, 0.2, {13, 14, 15}),
 		}
+	},
+	sounds = {
+		sword = newSound('assets/sound/sword.ogg'),
+		hit = newSound('assets/sound/hit.ogg'),
+		die = newSound('assets/sound/die.ogg'),
 	}
 }
